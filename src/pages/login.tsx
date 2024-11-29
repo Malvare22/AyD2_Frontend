@@ -41,7 +41,7 @@ function Login() {
           <div className="text-xl">No tines una Cuenta?</div>
           <div
             className="text-xl underline font-semibold text-[#BD0011] cursor-pointer"
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/registro")}
           >
             Registrate
           </div>
@@ -80,7 +80,7 @@ function Login() {
                   }
                 ></Input>
               </div>
-              <div className="text-lg font-semibold text-end text-[#BD0011]">
+              <div className="text-lg font-semibold text-end text-[#BD0011] cursor-pointer" onClick={() => navigate('/cambiarContrasenia/solicitar')}>
                 Recuperar contraseña
               </div>
             </div>

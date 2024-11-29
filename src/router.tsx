@@ -5,9 +5,11 @@ import Cursos from "./pages/Cursos";
 import MatricularCurso from "./pages/MatricularCurso";
 import Login from "./pages/login";
 import LayoutLogin from "./layouts/layoutLogin";
-import Register from "./pages/register";
 import Footer from "./components/footer";
 import Header from "./components/header";
+import Registro from "./pages/register";
+import Solicitar from "./pages/recuperarContrasenia/Solicitar";
+import Cambiar from "./pages/recuperarContrasenia/Cambiar";
 
 export const router = createBrowserRouter([
     {
@@ -43,8 +45,21 @@ export const router = createBrowserRouter([
           element: <LayoutLogin><Login/></LayoutLogin>
         },
         {
-          path: 'register',
-          element: <LayoutLogin><Register/></LayoutLogin>
+          path: 'registro',
+          element: <LayoutLogin><Registro/></LayoutLogin>
+        },
+        {
+          path: 'cambiarContrasenia',
+          children:[
+            {
+              path: 'solicitar',
+              element: <LayoutLogin><Solicitar/></LayoutLogin>
+            },
+            {
+              path: 'cambiar',
+              element: <LayoutLogin><Cambiar/></LayoutLogin>
+            }
+          ]
         }
       ]
     },

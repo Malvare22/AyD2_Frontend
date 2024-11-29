@@ -87,7 +87,7 @@ function Header() {
           </button>
           <button
             className="px-6 py-3 bg-black text-white rounded"
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/registro")}
           >
             Registrarse
           </button>
