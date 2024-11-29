@@ -10,6 +10,7 @@ import Header from "./components/header";
 import Registro from "./pages/register";
 import Solicitar from "./pages/recuperarContrasenia/Solicitar";
 import Cambiar from "./pages/recuperarContrasenia/Cambiar";
+import ValidarCodigo from "./pages/recuperarContrasenia/ValidarCodigo";
 
 export const router = createBrowserRouter([
     {
@@ -58,6 +59,10 @@ export const router = createBrowserRouter([
             {
               path: 'cambiar',
               element: <LayoutLogin><Cambiar/></LayoutLogin>
+            },
+            {
+              path: 'validar',
+              element: <LayoutLogin><ValidarCodigo/></LayoutLogin>
             }
           ]
         }

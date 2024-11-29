@@ -2,19 +2,24 @@ import { useNavigate } from "react-router-dom";
 import Input from "../../components/input";
 import { useState } from "react";
 import Button from "../../components/button";
+import { requestPasswordValid } from "../../services/account";
 import Modal from "../../components/modal";
-import { requestPasswordGetCode } from "../../services/account";
 
-function Solicitar() {
+function ValidarCodigo() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [openModal, setOpenModal] = useState(false);
+  const [codigo, setCodigo] = useState("");
+  const email = localStorage.getItem("RECOVERY_EMAIL") || " ";
+  const [open, setOpen] = useState(false);
   const onSubmit = async () => {
-    if (email != "") {
-      await requestPasswordGetCode(email);
-      localStorage.setItem("RECOVERY_EMAIL", email);
-      setOpenModal(true);
-    }
+    await requestPasswordValid(email, codigo).then((data) => {
+      if(data.e == 0){
+        setOpen(true);
+      }
+      else{
+        localStorage.setItem('RECOVERY_CODE', codigo);
+        navigate('/cambiarContrasenia/cambiar');
+      }
+    });
   };
 
   return (
@@ -32,42 +37,34 @@ function Solicitar() {
       </div>
       <div className="flex flex-col justify-center h-5/6 m-[-40px]">
         <Modal
-          message="Si el correo existe, se enviará un código de validación"
-          isOpen={openModal}
-          title="Recuperar Contraseña"
-          btnLabel="Continuar"
-          onClose={() => {
-            navigate("/cambiarContrasenia/validar");
-          }}
+          btnLabel="Aceptar"
+          isOpen={open}
+          onClose={() => setOpen(false)}
+          title="Error"
+          message="El código es incorrecto"
         />
         <div className="flex justify-center align-middle">
-          <form
-            className="w-3/6"
-            onSubmit={(e) => {
-              e.preventDefault();
-              onSubmit();
-            }}
-          >
+          <div className="w-3/6">
             <div className="font-bold text-4xl text-center mb-12">
-              Recuperar Contraseña
+              Cambiar Contraseña
             </div>
-            <div>
+            <div className="space-y-14">
+              <Input label="Correo" disabled={true} value={email}></Input>
               <Input
-                label="Correo"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.currentTarget.value)}
+                label="Código Enviado"
+                value={codigo}
+                onChange={(e) => setCodigo(e.currentTarget.value)}
               ></Input>
             </div>
             <div className="flex justify-center mt-20">
               <Button
-                type="submit"
+                text="Continuar"
+                disabled={codigo == ""}
+                onClick={onSubmit}
                 className="bg-[#BD0011] hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-96 h-14"
-                disabled={email == ""}
-                text="Solicitar Código"
               />
             </div>
-          </form>
+          </div>
         </div>
       </div>
       {/* ***** */}
@@ -75,4 +72,4 @@ function Solicitar() {
   );
 }
 
-export default Solicitar;
+export default ValidarCodigo;
