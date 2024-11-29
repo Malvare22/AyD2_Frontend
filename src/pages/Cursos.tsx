@@ -2,19 +2,13 @@ import { useEffect, useState } from "react";
 import { Curso, listarCursos } from "../services/cursoService";
 import CursoCard from "../components/CursoCard";
 
-const session = import.meta.env.VITE_SESSION;
-const correo = import.meta.env.VITE_EMAIL;
 
 const Cursos = () => {
     const [cursos, setCursos] = useState<Curso[]>([])
 
     useEffect(() => {
         (async () => {
-            const response = await listarCursos({
-                session: session,
-                token: "abc",
-                correo: correo
-            })
+            const response = await listarCursos()
 
             setCursos(response)
 

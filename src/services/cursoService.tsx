@@ -14,6 +14,9 @@ interface CursoRequest {
   salon?: string;
   estado_curso?: "activo" | "inactivo" | "completado";
   imagen?: File;
+}
+
+export interface UserSession {
   token: string;
   session: string;
   correo: string;
@@ -39,10 +42,17 @@ export interface Curso {
 
 async function sendCursoRequest(data: CursoRequest): Promise<any> {
   const formData = new FormData();
+  const sesion: UserSession = {
+    correo: localStorage.getItem('USER_EMAIL')!,
+    session: localStorage.getItem('USER_TOKEN')!,
+    token: ''
+  }
+  data = {...data, ...sesion};
   Object.entries(data).forEach(([key, value]) => {
     if (value !== undefined) formData.append(key, value as string | Blob);
   });
 
+  
 
   const response = await fetch(`${API_URL}/api/curso`, {
     method: "POST",
@@ -73,8 +83,8 @@ export async function eliminarCurso(params: Omit<CursoRequest, "orden">) {
   return sendCursoRequest({ ...params, orden: "eliminar" });
 }
 
-export async function listarCursos(params: Omit<CursoRequest, "orden">) {
-  return sendCursoRequest({ ...params, orden: "listar" });
+export async function listarCursos() {
+  return sendCursoRequest({ orden: "listar" });
 }
 
 export async function inscribirCurso(params: Omit<CursoRequest, "orden">) {
