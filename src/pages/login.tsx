@@ -21,6 +21,7 @@ function Login() {
         else{
           localStorage.setItem('USER_TOKEN', data.session);
           localStorage.setItem('USER_TYPE', data.rol);
+          localStorage.setItem('USER_EMAIL', data.correo);
           navigate('/');
         }
       });

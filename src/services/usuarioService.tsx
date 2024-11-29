@@ -1,3 +1,4 @@
+import { UserSession } from "./cursoService";
 
 
 type UsuarioRol = "administrador" | "estudiante" | "docente";
@@ -5,8 +6,6 @@ type Orden = "crear" | "modificar" | "listar";
 
 interface UsuarioRequest {
   correo_cuenta?: string;
-  session: string;
-  correo: string;
   nombres?: string;
   apellidos?: string;
   codigo?: string;
@@ -34,6 +33,14 @@ const API_URL: string = import.meta.env.VITE_BACKEND_URL;
  * @returns Respuesta de la API.
  */
 async function postCuenta(body: UsuarioRequest): Promise<any> {
+
+  const sesion: UserSession = {
+    correo: localStorage.getItem('USER_EMAIL')!,
+    session: localStorage.getItem('USER_TOKEN')!,
+    token: ''
+  }
+  body = {...body, ...sesion};
+
   const response = await fetch(`${API_URL}/api/cuenta`, {
     method: "POST",
     headers: {
@@ -80,10 +87,8 @@ export async function modificarCuenta(data: Omit<UsuarioRequest, "orden"> & { id
  * @param correo Correo del usuario que solicita el listado.
  * @returns Respuesta de la API con los datos de las cuentas.
  */
-export async function listarCuentas(session: string, correo: string): Promise<any> {
+export async function listarCuentas(): Promise<any> {
   return postCuenta({
-    session,
-    correo,
     orden: "listar",
   });
 }

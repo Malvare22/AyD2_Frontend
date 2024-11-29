@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { listarCuentas, modificarCuenta, Usuario } from "../services/usuarioService";
 
-const session = import.meta.env.VITE_SESSION;
-const correo = import.meta.env.VITE_EMAIL;
 
 interface EditableRowProps {
     usuario: Usuario;
@@ -131,7 +129,7 @@ const Usuarios = () => {
 
     useEffect(() => {
         (async () => {
-            const response = await listarCuentas(session, correo);
+            const response = await listarCuentas();
             console.log(response);
 
             setUsuarios(response.usuarios);
@@ -144,7 +142,7 @@ const Usuarios = () => {
 
     const handleSave = async (updatedUser: Usuario) => {
         try {
-            const response = await modificarCuenta({...updatedUser, session})
+            const response = await modificarCuenta({...updatedUser})
             console.log(response);
             
 
