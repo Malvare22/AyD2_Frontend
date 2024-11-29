@@ -18,13 +18,13 @@ const Inicio = () => {
 
     useEffect(() => {
         (async () => {
-            const response = await listarCursos({
+            const response: Curso[] = await listarCursos({
                 session: session, 
                 token: "abc",
                 correo: correo
             })
 
-            setCursos(response)
+            setCursos(response.slice(0,3))
             
         })();
     }, [])
@@ -78,7 +78,7 @@ const Inicio = () => {
                         Explora nuestros cursos y matricúlate en el que más te guste.
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {cursos.slice(0,2).map((curso: Curso, idx: number) => <CursoCard key={idx} curso={curso} />)}
+                        {cursos.map((curso: Curso, idx: number) => <CursoCard key={idx} curso={curso} />)}
                     </div>
                     <div className="text-center mt-12">
                         <Link to={'/cursos'}>

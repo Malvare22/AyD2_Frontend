@@ -27,7 +27,7 @@ const MatricularCurso = () => {
             <div className="max-w-3xl mx-auto px-4 py-12 text-center">
                 <div className="relative w-full h-[400px] overflow-hidden">
                     <img
-                        src="/placeholder.svg?height=800&width=1920"
+                        src={curso?.ruta_imagen}
                         alt={curso?.nombre}
                         className="w-full h-full object-cover"
 
