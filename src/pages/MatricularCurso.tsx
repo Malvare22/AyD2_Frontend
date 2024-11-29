@@ -2,20 +2,13 @@ import { useEffect, useState } from "react";
 import { Curso, obtenerDetalle } from "../services/cursoService";
 import { useParams } from "react-router-dom";
 
-const session = import.meta.env.VITE_SESSION;
-const correo = import.meta.env.VITE_EMAIL;
 
 const MatricularCurso = () => {
     const [curso, setCurso] = useState<Curso>();
     const { id } = useParams();
     useEffect(() => {
         (async () => {
-            const response = await obtenerDetalle({
-                session: session,
-                token: "abc",
-                correo: correo,
-                id: parseInt(id!)
-            })
+            const response = await obtenerDetalle({id: parseInt(id!)})
             setCurso(response.curso)
         })();
     }, [])
