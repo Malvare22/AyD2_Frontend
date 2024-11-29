@@ -13,15 +13,16 @@ interface UsuarioRequest {
   rol?: UsuarioRol;
   clave?: string;
   orden: Orden;
-  id?: string;
+  id?: number;
 }
 
 export interface Usuario {
-    id: number;
-    rol: UsuarioRol;
-    codigo: string;
-    nombres: string;
-    apellidos: string;
+  id: number;
+  rol: UsuarioRol;
+  codigo: string;
+  correo: string;
+  nombres: string;
+  apellidos: string;
 }
 
 const API_KEY: string = import.meta.env.VITE_API_KEY;
@@ -66,7 +67,7 @@ export async function crearCuenta(data: Omit<UsuarioRequest, "orden">): Promise<
  * @param data Datos necesarios para modificar la cuenta (incluye `id`).
  * @returns Respuesta de la API.
  */
-export async function modificarCuenta(data: Omit<UsuarioRequest, "orden"> & { id: string }): Promise<any> {
+export async function modificarCuenta(data: Omit<UsuarioRequest, "orden"> & { id: number }): Promise<any> {
   return postCuenta({
     ...data,
     orden: "modificar",
