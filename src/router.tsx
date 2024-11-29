@@ -6,6 +6,7 @@ import MatricularCurso from "./pages/MatricularCurso";
 import Login from "./pages/login";
 import LayoutLogin from "./layouts/layoutLogin";
 import Register from "./pages/register";
+import Footer from "./components/footer";
 
 export const router = createBrowserRouter([
     {
@@ -22,7 +23,7 @@ export const router = createBrowserRouter([
         {
           path: '',
           index: true,
-          element: <Inicio />
+          element: <><Inicio /><Footer/></>
         },
         {
           path: '/usuarios',
