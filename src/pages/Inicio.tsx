@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { listarCursos, Curso } from "../services/cursoService";
 import CursoCard from "../components/CursoCard";
 import { Link } from "react-router-dom";
+import estudiantesIngSistemas from "../assets/ingsistemas.jpg"
 
 interface Teacher {
     name: string;
@@ -19,13 +20,13 @@ const Inicio = () => {
     useEffect(() => {
         (async () => {
             const response: Curso[] = await listarCursos({
-                session: session, 
+                session: session,
                 token: "abc",
                 correo: correo
             })
 
-            setCursos(response.slice(0,3))
-            
+            setCursos(response.slice(0, 3))
+
         })();
     }, [])
 
@@ -53,21 +54,25 @@ const Inicio = () => {
         <div className="min-h-screen bg-white">
 
             {/* Hero Section */}
-            <section className="max-w-7xl mx-auto px-4 py-16 flex items-center justify-between">
-                <div className="max-w-xl">
-                    <h1 className="text-5xl font-bold mb-6">Cursos de Profundización</h1>
-                    <p className="text-gray-600 mb-8">
-                        Explora una variedad de cursos diseñados para ampliar tus conocimientos en áreas especializadas.
-                        Postúlate y lleva tu formación académica al siguiente nivel con programas que se ajustan a tus intereses y
-                        metas profesionales.
-                    </p>
-                </div>
-                <div className="relative">
-                    <img
-                        src="/api/placeholder/500/300"
-                        alt="Estudiantes"
-                        className="rounded-lg shadow-lg"
-                    />
+            <section className="max-w-7xl mx-auto px-4 py-16">
+                <div className="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-16">
+                    <div className="w-full md:w-1/2 md:pr-8">
+                        <h1 className="text-4xl md:text-5xl font-bold mb-6">
+                            Cursos de Profundización
+                        </h1>
+                        <p className="text-gray-600">
+                            Explora una variedad de cursos diseñados para ampliar tus conocimientos en áreas especializadas.
+                            Postúlate y lleva tu formación académica al siguiente nivel con programas que se ajustan a tus intereses y
+                            metas profesionales.
+                        </p>
+                    </div>
+                    <div className="w-1/2 md:w-1/3">
+                        <img
+                            src={estudiantesIngSistemas}
+                            alt="Estudiantes de Ingeniería de Sistemas"
+                            className="w-full rounded-lg shadow-lg"
+                        />
+                    </div>
                 </div>
             </section>
             {/* Latest Courses Section */}
@@ -82,9 +87,9 @@ const Inicio = () => {
                     </div>
                     <div className="text-center mt-12">
                         <Link to={'/cursos'}>
-                        <button className="px-6 py-3 bg-black text-white rounded">
-                            Ver más cursos
-                        </button>
+                            <button className="px-6 py-3 bg-black text-white rounded">
+                                Ver más cursos
+                            </button>
                         </Link>
                     </div>
                 </div>
