@@ -7,6 +7,7 @@ import Login from "./pages/login";
 import LayoutLogin from "./layouts/layoutLogin";
 import Register from "./pages/register";
 import Footer from "./components/footer";
+import Header from "./components/header";
 
 export const router = createBrowserRouter([
     {
@@ -23,7 +24,7 @@ export const router = createBrowserRouter([
         {
           path: '',
           index: true,
-          element: <><Inicio /><Footer/></>
+          element: <><Header/><Inicio /><Footer/></>
         },
         {
           path: '/usuarios',
