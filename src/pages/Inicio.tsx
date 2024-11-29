@@ -1,12 +1,7 @@
-import React from 'react';
-
-// Types
-interface Course {
-    category: string;
-    title: string;
-    imageUrl: string;
-    date: string;
-}
+import { useEffect, useState } from "react";
+import { listarCursos, Curso } from "../services/cursoService";
+import CursoCard from "../components/CursoCard";
+import { Link } from "react-router-dom";
 
 interface Teacher {
     name: string;
@@ -15,27 +10,24 @@ interface Teacher {
     imageUrl: string;
 }
 
+const session = import.meta.env.VITE_SESSION;
+const correo = import.meta.env.VITE_EMAIL;
+
 const Inicio = () => {
-    const courses: Course[] = [
-        {
-            category: 'Gestion de Proyectos',
-            title: 'Aliqua Irure Tempor Lorem Occaecat Volup',
-            imageUrl: '/api/placeholder/400/300',
-            date: 'Dec 24, 2022'
-        },
-        {
-            category: 'Desarrollo de Software',
-            title: 'Commodo Deserunt Ipsum Occaecat Qui',
-            imageUrl: '/api/placeholder/400/300',
-            date: 'Dec 12, 2022'
-        },
-        {
-            category: 'Computacion en la nube',
-            title: 'Deserunt Ccaecat Qui Amet Tempor Dolore',
-            imageUrl: '/api/placeholder/400/300',
-            date: 'Nov 20, 2022'
-        },
-    ];
+    const [cursos, setCursos] = useState<Curso[]>([])
+
+    useEffect(() => {
+        (async () => {
+            const response = await listarCursos({
+                session: session, 
+                token: "abc",
+                correo: correo
+            })
+
+            setCursos(response)
+            
+        })();
+    }, [])
 
     const teachers: Teacher[] = [
         {
@@ -57,7 +49,6 @@ const Inicio = () => {
             imageUrl: '/api/placeholder/200/200'
         },
     ];
-
     return (
         <div className="min-h-screen bg-white">
 
@@ -79,37 +70,22 @@ const Inicio = () => {
                     />
                 </div>
             </section>
-
             {/* Latest Courses Section */}
             <section className="bg-[#B71C1C] text-white py-16">
                 <div className="max-w-7xl mx-auto px-4">
                     <h2 className="text-3xl font-bold text-center mb-4">Ultimos Cursos Agregados</h2>
                     <p className="text-center mb-12">
-                        Do consectetur proident proident id eiusmod deserunt consequat pariatur ad ex velit do Lorem reprehenderit.
+                        Explora nuestros cursos y matricúlate en el que más te guste.
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {courses.map((course, index) => (
-                            <div key={index} className="bg-white text-black rounded-lg overflow-hidden">
-                                <img
-                                    src={course.imageUrl}
-                                    alt={course.title}
-                                    className="w-full h-48 object-cover"
-                                />
-                                <div className="p-6">
-                                    <span className="text-[#B71C1C] text-sm">{course.category}</span>
-                                    <h3 className="font-bold text-xl mt-2 mb-4">{course.title}</h3>
-                                    <div className="flex justify-between items-center">
-                                        <span className="text-gray-500 text-sm">{course.date}</span>
-                                        <button className="text-[#B71C1C] text-sm">ver más</button>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+                        {cursos.slice(0,2).map((curso: Curso, idx: number) => <CursoCard key={idx} curso={curso} />)}
                     </div>
                     <div className="text-center mt-12">
+                        <Link to={'/cursos'}>
                         <button className="px-6 py-3 bg-black text-white rounded">
                             Ver más cursos
                         </button>
+                        </Link>
                     </div>
                 </div>
             </section>
