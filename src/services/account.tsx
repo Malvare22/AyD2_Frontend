@@ -54,3 +54,9 @@ export const requestPasswordChange = async (
   const response = await axiosClient.post("/api/recuperarclave", body);
   return response.data;
 };
+
+// export const registerUser = async (account: { correo: string; clave: string }) => {
+//   const response = await axiosClient.post("/api/login", account);
+//   return response.data;
+// };
+
