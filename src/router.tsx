@@ -10,7 +10,10 @@ import Header from "./components/header";
 import Registro from "./pages/register";
 import Solicitar from "./pages/recuperarContrasenia/Solicitar";
 import Cambiar from "./pages/recuperarContrasenia/Cambiar";
+import CursosAdmin from "./pages/CursosAdmin";
+import CrearCursoAdmin from "./pages/CrearCurso";
 import ValidarCodigo from "./pages/recuperarContrasenia/ValidarCodigo";
+import EditarCursoAdmin from "./pages/EditarCurso";
 
 export const router = createBrowserRouter([
     {
@@ -31,15 +34,27 @@ export const router = createBrowserRouter([
         },
         {
           path: '/usuarios',
-          element: <Usuarios />
+          element: <><Header/><Usuarios /><Footer/></>
         },
         {
           path: '/cursos',
-          element: <Cursos />
+          element: <><Header/><Cursos /><Footer/></>
         },
         {
           path: '/cursos/:id',
-          element: <MatricularCurso />
+          element: <><Header/><MatricularCurso /><Footer/></>
+        },
+        {
+          path: 'cursos-admin',
+          element: <><Header/><CursosAdmin /><Footer/></>
+        },
+        {
+          path: 'cursos-crear',
+          element: <><Header/><CrearCursoAdmin /><Footer/></>
+        },
+        {
+          path: 'cursos-editar/:id',
+          element: <><Header/><EditarCursoAdmin /><Footer/></>
         },
         {
           path: 'login',

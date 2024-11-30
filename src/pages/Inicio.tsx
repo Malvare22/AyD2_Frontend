@@ -3,53 +3,31 @@ import { listarCursos, Curso } from "../services/cursoService";
 import CursoCard from "../components/CursoCard";
 import { Link } from "react-router-dom";
 import estudiantesIngSistemas from "../assets/ingsistemas.jpg"
+import { listarCuentas, Usuario } from "../services/usuarioService";
 
-interface Teacher {
-    name: string;
-    title: string;
-    description: string;
-    imageUrl: string;
-}
-
-const session = import.meta.env.VITE_SESSION;
-const correo = import.meta.env.VITE_EMAIL;
 
 const Inicio = () => {
     const [cursos, setCursos] = useState<Curso[]>([])
+    const [profesores, setProfesores] = useState<Usuario[]>([]);
 
     useEffect(() => {
         (async () => {
-            const response: Curso[] = await listarCursos({
-                session: session,
-                token: "abc",
-                correo: correo
-            })
+            const responseCursos: Curso[] = await listarCursos()
+            console.log(responseCursos);
+            
+            setCursos(responseCursos.slice(0, 3))
 
-            setCursos(response.slice(0, 3))
+            const responseProfes = await listarCuentas();
+
+            console.log(responseProfes);
+            const data: Usuario[] = responseProfes.usuarios;
+            
+            
+            setProfesores(data.filter(e => e.rol === "docente"))
 
         })();
     }, [])
 
-    const teachers: Teacher[] = [
-        {
-            name: 'Full name',
-            title: 'Professional title',
-            description: 'Commodo qui nulla ipsum ea cupidatat sit aliquip.',
-            imageUrl: '/api/placeholder/200/200'
-        },
-        {
-            name: 'Full name',
-            title: 'Professional title',
-            description: 'Commodo qui nulla ipsum ea cupidatat sit aliquip.',
-            imageUrl: '/api/placeholder/200/200'
-        },
-        {
-            name: 'Full name',
-            title: 'Professional title',
-            description: 'Commodo qui nulla ipsum ea cupidatat sit aliquip.',
-            imageUrl: '/api/placeholder/200/200'
-        },
-    ];
     return (
         <div className="min-h-screen bg-white">
 
@@ -105,16 +83,14 @@ const Inicio = () => {
                         hacia la especialización y éxito académico.
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {teachers.map((teacher, index) => (
+                        {profesores!.map((profesor: Usuario, index: number) => (
                             <div key={index} className="bg-white rounded-lg shadow-lg p-6 text-center">
                                 <img
-                                    src={teacher.imageUrl}
-                                    alt={teacher.name}
+                                    src={estudiantesIngSistemas}
+                                    alt={profesor.nombres}
                                     className="w-32 h-32 rounded-full mx-auto mb-4"
                                 />
-                                <h3 className="font-bold text-xl">{teacher.name}</h3>
-                                <p className="text-[#B71C1C] mb-4">{teacher.title}</p>
-                                <p className="text-gray-600 mb-4">{teacher.description}</p>
+                                <h3 className="font-bold text-xl">{profesor.nombres} {profesor.apellidos}</h3>
                                 <div className="flex justify-center space-x-4">
                                     <a href="#" className="text-blue-400">
                                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
