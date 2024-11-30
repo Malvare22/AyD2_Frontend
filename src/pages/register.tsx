@@ -1,7 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Input from "../components/input";
 
-function Register() {
+function Registro() {
 
     const navigate = useNavigate();
     
@@ -48,4 +48,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default Registro;

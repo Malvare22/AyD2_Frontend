@@ -1,21 +1,18 @@
 import { useEffect, useState } from "react";
 import { Curso, listarCursos } from "../services/cursoService";
 import CursoCard from "../components/CursoCard";
+import { useNavigate } from "react-router-dom";
 
-const session = import.meta.env.VITE_SESSION;
-const correo = import.meta.env.VITE_EMAIL;
 
 const Cursos = () => {
     const [cursos, setCursos] = useState<Curso[]>([])
-
+    const navigate = useNavigate();
     useEffect(() => {
         (async () => {
-            const response = await listarCursos({
-                session: session,
-                token: "abc",
-                correo: correo
-            })
-
+            const response = await listarCursos()
+            if(response.e === '3'){
+                navigate("/login");
+              }
             setCursos(response)
 
         })();

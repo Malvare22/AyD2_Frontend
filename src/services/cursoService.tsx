@@ -1,7 +1,7 @@
 const API_KEY: string = import.meta.env.VITE_API_KEY;
 const API_URL: string = import.meta.env.VITE_BACKEND_URL;
 
-interface CursoRequest {
+export interface CursoRequest {
   orden: string;
   id?: number;
   nombre?: string;
@@ -14,6 +14,11 @@ interface CursoRequest {
   salon?: string;
   estado_curso?: "activo" | "inactivo" | "completado";
   imagen?: File;
+  id_estudiante?: number;
+  id_docente?: number;
+}
+
+export interface UserSession {
   token: string;
   session: string;
   correo: string;
@@ -39,6 +44,12 @@ export interface Curso {
 
 async function sendCursoRequest(data: CursoRequest): Promise<any> {
   const formData = new FormData();
+  const sesion: UserSession = {
+    correo: localStorage.getItem('USER_EMAIL')!,
+    session: localStorage.getItem('USER_TOKEN')!,
+    token: ''
+  }
+  data = {...data, ...sesion};
   Object.entries(data).forEach(([key, value]) => {
     if (value !== undefined) formData.append(key, value as string | Blob);
   });
@@ -65,6 +76,18 @@ export async function crearCurso(params: Omit<CursoRequest, "orden">) {
   return sendCursoRequest({ ...params, orden: "crear" });
 }
 
+export async function verAsignados(params: Omit<CursoRequest, "orden">) {
+  return sendCursoRequest({ ...params, orden: "ver_asignaciones" });
+}
+
+export async function asignarEstudiante(params: Omit<CursoRequest, "orden">) {
+  return sendCursoRequest({ ...params, orden: "asignar_estudiante" });
+}
+
+export async function asignarDocente(params: Omit<CursoRequest, "orden">) {
+  return sendCursoRequest({ ...params, orden: "asignar_docente" });
+}
+
 export async function modificarCurso(params: Omit<CursoRequest, "orden">) {
   return sendCursoRequest({ ...params, orden: "modificar" });
 }
@@ -73,8 +96,8 @@ export async function eliminarCurso(params: Omit<CursoRequest, "orden">) {
   return sendCursoRequest({ ...params, orden: "eliminar" });
 }
 
-export async function listarCursos(params: Omit<CursoRequest, "orden">) {
-  return sendCursoRequest({ ...params, orden: "listar" });
+export async function listarCursos() {
+  return sendCursoRequest({ orden: "listar" });
 }
 
 export async function inscribirCurso(params: Omit<CursoRequest, "orden">) {

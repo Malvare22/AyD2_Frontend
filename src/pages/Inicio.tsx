@@ -14,15 +14,12 @@ const Inicio = () => {
 
     useEffect(() => {
         (async () => {
-            const responseCursos: Curso[] = await listarCursos({
-                session: session,
-                token: "abc",
-                correo: correo
-            })
-
+            const responseCursos: Curso[] = await listarCursos()
+            console.log(responseCursos);
+            
             setCursos(responseCursos.slice(0, 3))
 
-            const responseProfes = await listarCuentas(session, correo);
+            const responseProfes = await listarCuentas();
 
             console.log(responseProfes);
             const data: Usuario[] = responseProfes.usuarios;
