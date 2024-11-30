@@ -7,8 +7,6 @@ type Orden = "crear" | "modificar" | "listar";
 
 interface UsuarioRequest {
   correo_cuenta?: string;
-  session: string;
-  correo: string;
   nombres?: string;
   apellidos?: string;
   codigo?: string;
