@@ -66,7 +66,7 @@ function Header() {
             <HeaderOption
               icon={<BookSVG />}
               text="Cursos de Profundización"
-              to="/cursos"
+              to="/cursos-admin"
             ></HeaderOption>
             <HeaderOption
               icon={<PersonsSVG />}

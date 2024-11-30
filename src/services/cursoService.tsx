@@ -14,6 +14,8 @@ export interface CursoRequest {
   salon?: string;
   estado_curso?: "activo" | "inactivo" | "completado";
   imagen?: File;
+  id_estudiante?: number;
+  id_docente?: number;
 }
 
 export interface UserSession {
@@ -52,7 +54,6 @@ async function sendCursoRequest(data: CursoRequest): Promise<any> {
     if (value !== undefined) formData.append(key, value as string | Blob);
   });
 
-  
 
   const response = await fetch(`${API_URL}/api/curso`, {
     method: "POST",
@@ -73,6 +74,18 @@ async function sendCursoRequest(data: CursoRequest): Promise<any> {
 
 export async function crearCurso(params: Omit<CursoRequest, "orden">) {
   return sendCursoRequest({ ...params, orden: "crear" });
+}
+
+export async function verAsignados(params: Omit<CursoRequest, "orden">) {
+  return sendCursoRequest({ ...params, orden: "ver_asignaciones" });
+}
+
+export async function asignarEstudiante(params: Omit<CursoRequest, "orden">) {
+  return sendCursoRequest({ ...params, orden: "asignar_estudiante" });
+}
+
+export async function asignarDocente(params: Omit<CursoRequest, "orden">) {
+  return sendCursoRequest({ ...params, orden: "asignar_docente" });
 }
 
 export async function modificarCurso(params: Omit<CursoRequest, "orden">) {

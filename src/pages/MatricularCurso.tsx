@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Curso, obtenerDetalle } from "../services/cursoService";
 import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 
 const MatricularCurso = () => {
@@ -8,10 +9,23 @@ const MatricularCurso = () => {
     const { id } = useParams();
     useEffect(() => {
         (async () => {
-            const response = await obtenerDetalle({id: parseInt(id!)})
+            const response = await obtenerDetalle({ id: parseInt(id!) })
             setCurso(response.curso)
         })();
     }, [])
+
+    const matricularCurso = async () => {
+        const response = await Swal.fire({
+            text: 'Quieres matricularte en este curso?',
+            icon: 'question',
+            confirmButtonText: 'Solicitar matrícula',
+            cancelButtonText: 'Cancelar',
+            showCancelButton: true,
+        })
+        if(response.isConfirmed){
+            alert("bip bip endpoint solicitar matricula")
+        }
+    }
 
     return (<>
 
@@ -38,12 +52,12 @@ const MatricularCurso = () => {
                     Inicia el {curso?.fecha_inicio}
                 </div>
 
-                <a
-                    href="#"
+                <button
+                    onClick={()=>matricularCurso()}
                     className="inline-flex items-center text-red-600 hover:text-red-700 font-medium"
                 >
                     Matricular curso {">"}
-                </a>
+                </button>
             </div>
 
         </main>
