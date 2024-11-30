@@ -37,6 +37,10 @@ export const router = createBrowserRouter([
           element: <><Header/><Usuarios /><Footer/></>
         },
         {
+          path: '/usuarios/registrar',
+          element: <LayoutLogin><Registro/></LayoutLogin>
+        },
+        {
           path: '/cursos',
           element: <><Header/><Cursos /><Footer/></>
         },
@@ -59,10 +63,6 @@ export const router = createBrowserRouter([
         {
           path: 'login',
           element: <LayoutLogin><Login/></LayoutLogin>
-        },
-        {
-          path: 'registro',
-          element: <LayoutLogin><Registro/></LayoutLogin>
         },
         {
           path: 'cambiarContrasenia',
