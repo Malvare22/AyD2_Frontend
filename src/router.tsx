@@ -14,6 +14,7 @@ import CursosAdmin from "./pages/CursosAdmin";
 import CrearCursoAdmin from "./pages/CrearCurso";
 import ValidarCodigo from "./pages/recuperarContrasenia/ValidarCodigo";
 import EditarCursoAdmin from "./pages/EditarCurso";
+import Perfil from "./pages/perfil";
 
 export const router = createBrowserRouter([
     {
@@ -63,6 +64,10 @@ export const router = createBrowserRouter([
         {
           path: 'login',
           element: <LayoutLogin><Login/></LayoutLogin>
+        },
+        {
+          path: 'perfil',
+          element: <><Header/><div className="p-20"><div className="border border-black"><LayoutLogin><Perfil/></LayoutLogin></div></div><Footer/></>
         },
         {
           path: 'cambiarContrasenia',
