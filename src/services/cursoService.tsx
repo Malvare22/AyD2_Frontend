@@ -1,7 +1,7 @@
 const API_KEY: string = import.meta.env.VITE_API_KEY;
 const API_URL: string = import.meta.env.VITE_BACKEND_URL;
 
-interface CursoRequest {
+export interface CursoRequest {
   orden: string;
   id?: number;
   nombre?: string;

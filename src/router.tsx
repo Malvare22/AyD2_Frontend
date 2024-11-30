@@ -13,6 +13,7 @@ import Cambiar from "./pages/recuperarContrasenia/Cambiar";
 import CursosAdmin from "./pages/CursosAdmin";
 import CrearCursoAdmin from "./pages/CrearCurso";
 import ValidarCodigo from "./pages/recuperarContrasenia/ValidarCodigo";
+import EditarCursoAdmin from "./pages/EditarCurso";
 
 export const router = createBrowserRouter([
     {
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
         {
           path: 'cursos-crear',
           element: <><Header/><CrearCursoAdmin /><Footer/></>
+        },
+        {
+          path: 'cursos-editar/:id',
+          element: <><Header/><EditarCursoAdmin /><Footer/></>
         },
         {
           path: 'login',

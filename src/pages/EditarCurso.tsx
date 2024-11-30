@@ -1,9 +1,10 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import { listarCuentas, Usuario } from '../services/usuarioService'
 import SearchSelect from '../components/searchSelect';
-import { crearCurso, CursoRequest } from '../services/cursoService';
+import { CursoRequest, modificarCurso, obtenerDetalle } from '../services/cursoService';
+import { useParams } from 'react-router-dom';
 
-const CrearCursoAdmin = () => {
+const EditarCursoAdmin = () => {
   const [profesores, setProfesores] = useState<Usuario[]>([]);
   const [estudiantes, setEstudiantes] = useState<Usuario[]>([]);
   const [profeSelec, setProfeSelec] = useState<Usuario[]>([]);
@@ -22,12 +23,18 @@ const CrearCursoAdmin = () => {
     nombre: '',
     presupuesto: 0
   });
+  const {id} = useParams();
 
   useEffect(() => {
     (async () => {
       const response = await listarCuentas();
       setProfesores(response.usuarios.filter((e: Usuario) => e.rol === 'docente'))
       setEstudiantes(response.usuarios.filter((e: Usuario) => e.rol === 'estudiante'))
+      const responseC = await obtenerDetalle({
+        ...curso, id: parseInt(id!)
+      })
+      setCurso({...responseC.curso, estado_curso: responseC.curso.estado});      
+      
     })()
   }, [])
 
@@ -66,7 +73,9 @@ const CrearCursoAdmin = () => {
 
   const guardar = async () => {
     try {
-      await crearCurso(curso);
+      console.log(curso);
+      
+      await modificarCurso({...curso, id: parseInt(id!)});
     } catch (error) {
       alert(error)
     }
@@ -217,4 +226,4 @@ const CrearCursoAdmin = () => {
   )
 }
 
-export default CrearCursoAdmin;
+export default EditarCursoAdmin;
