@@ -35,7 +35,7 @@ function Header() {
         <div>
           <img src={Logo} width={"100px"}></img>
         </div>
-        <div className="text-white text-4xl font-bold">SIACP</div>
+        <div className="text-white text-4xl font-bold">SIACP, {context}</div>
       </div>
 
       {context == "estudiante" && (

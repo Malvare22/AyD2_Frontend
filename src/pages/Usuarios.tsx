@@ -109,7 +109,7 @@ const EditableRow: React.FC<EditableRowProps> = ({
           className="w-full px-2 py-1 border rounded"
         >
           <option value="estudiante">Estudiante</option>
-          <option value="profesor">Profesor</option>
+          <option value="docente">Docente</option>
         </select>
       </td>
       <td className="border-b py-2 px-4">
