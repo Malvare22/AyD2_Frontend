@@ -1,3 +1,5 @@
+import { z } from "zod";
+import { registerSchema } from "../forms/registerSchema";
 import axiosClient from "./axiosClient";
 
 export const loginUser = async (account: { correo: string; clave: string }) => {
@@ -55,8 +57,35 @@ export const requestPasswordChange = async (
   return response.data;
 };
 
-// export const registerUser = async (account: { correo: string; clave: string }) => {
-//   const response = await axiosClient.post("/api/login", account);
-//   return response.data;
-// };
+export interface RegisterUser {
+  correo_cuenta: string;
+  session: string;
+  correo: string;
+  nombres: string;
+  apellidos: string;
+  codigo: string;
+  rol: "estudiante" | "docente" | "administrador"; // Puedes ajustar estos valores según los roles posibles
+  clave: string;
+  orden: "crear" | "editar" | "eliminar"; // Si los valores de 'orden' son solo esos, los defines así
+  id: string;
+}
 
+export const registerUser = async (
+  data: z.infer<typeof registerSchema>
+) => {
+  const body: RegisterUser = {
+    correo_cuenta: data.correo,
+    session: localStorage.getItem("USER_TOKEN")!,
+    correo: localStorage.getItem("USER_EMAIL")!,
+    nombres: data.nombre,
+    apellidos: data.apellido,
+    codigo: data.codigo,
+    rol: data.rol,
+    clave: data.contrasena,
+    orden: "crear",
+    id: "string",
+  };
+
+  const response = await axiosClient.post("/api/cuenta", body);
+  return response.data;
+};
