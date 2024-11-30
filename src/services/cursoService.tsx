@@ -54,7 +54,6 @@ async function sendCursoRequest(data: CursoRequest): Promise<any> {
     if (value !== undefined) formData.append(key, value as string | Blob);
   });
 
-  
 
   const response = await fetch(`${API_URL}/api/curso`, {
     method: "POST",

@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import estudiantesIngSistemas from "../assets/ingsistemas.jpg"
 import { listarCuentas, Usuario } from "../services/usuarioService";
 
+const session = import.meta.env.VITE_SESSION;
+const correo = import.meta.env.VITE_EMAIL;
 
 const Inicio = () => {
     const [cursos, setCursos] = useState<Curso[]>([])

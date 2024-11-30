@@ -1,11 +1,14 @@
 import { UserSession } from "./cursoService";
 
 
+
 type UsuarioRol = "administrador" | "estudiante" | "docente";
 type Orden = "crear" | "modificar" | "listar";
 
 interface UsuarioRequest {
   correo_cuenta?: string;
+  session: string;
+  correo: string;
   nombres?: string;
   apellidos?: string;
   codigo?: string;
@@ -54,6 +57,7 @@ async function postCuenta(body: UsuarioRequest): Promise<any> {
 
   if (!response.ok) {
     throw new Error(`Error: ${response.status} ${await response.text()}`);
+    throw new Error(`Error: ${response.status}`);
   }
 
   return response.json();
