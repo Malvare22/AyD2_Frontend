@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import { listarCuentas, Usuario } from '../services/usuarioService'
 import SearchSelect from '../components/searchSelect';
-import { CursoRequest, modificarCurso, obtenerDetalle } from '../services/cursoService';
+import { asignarDocente, asignarEstudiante, CursoRequest, modificarCurso, obtenerDetalle, verAsignados } from '../services/cursoService';
 import { useParams } from 'react-router-dom';
 
 const EditarCursoAdmin = () => {
@@ -30,6 +30,10 @@ const EditarCursoAdmin = () => {
       const response = await listarCuentas();
       setProfesores(response.usuarios.filter((e: Usuario) => e.rol === 'docente'))
       setEstudiantes(response.usuarios.filter((e: Usuario) => e.rol === 'estudiante'))
+      const response2 = await verAsignados({id: parseInt(id!)});
+      console.log(response2);
+      setProfeSelec(response2.asignaciones ?? []);
+      setEstuSelec(response2.matriculados ?? []);
       const responseC = await obtenerDetalle({
         ...curso, id: parseInt(id!)
       })
@@ -74,7 +78,18 @@ const EditarCursoAdmin = () => {
   const guardar = async () => {
     try {
       console.log(curso);
-      
+      for(const estudiante of estuSelec){
+        await asignarEstudiante({
+          id: parseInt(id!),
+          id_estudiante: estudiante.id
+        })
+      }
+      for(const docente of profeSelec){
+        await asignarDocente({
+          id: parseInt(id!),
+          id_docente: docente.id
+        })
+      }
       await modificarCurso({...curso, id: parseInt(id!)});
     } catch (error) {
       alert(error)
