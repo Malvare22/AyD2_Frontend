@@ -71,7 +71,7 @@ function Header() {
             <HeaderOption
               icon={<PersonsSVG />}
               text="Usuarios"
-              to="/cursos"
+              to="/usuarios"
             ></HeaderOption>
           </div>
         </>

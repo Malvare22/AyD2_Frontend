@@ -13,6 +13,7 @@ interface UsuarioRequest {
   clave?: string;
   orden: Orden;
   id?: number;
+  correo?: string;
 }
 
 export interface Usuario {
@@ -38,8 +39,9 @@ async function postCuenta(body: UsuarioRequest): Promise<any> {
     correo: localStorage.getItem('USER_EMAIL')!,
     session: localStorage.getItem('USER_TOKEN')!,
     token: ''
-  }
-  body = {...body, ...sesion};
+  }  
+  
+  body = { ...body, ...sesion, correo_cuenta: body.correo };
 
   const response = await fetch(`${API_URL}/api/cuenta`, {
     method: "POST",
@@ -51,7 +53,7 @@ async function postCuenta(body: UsuarioRequest): Promise<any> {
   });
 
   if (!response.ok) {
-    throw new Error(`Error: ${response.status}`);
+    throw new Error(`Error: ${response.status} ${await response.text()}`);
   }
 
   return response.json();
