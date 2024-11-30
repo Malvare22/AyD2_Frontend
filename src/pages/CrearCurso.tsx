@@ -2,6 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { listarCuentas, Usuario } from '../services/usuarioService'
 import SearchSelect from '../components/searchSelect';
 import { crearCurso, CursoRequest } from '../services/cursoService';
+import { useNavigate } from 'react-router-dom';
 
 const CrearCursoAdmin = () => {
   const [profesores, setProfesores] = useState<Usuario[]>([]);
@@ -22,10 +23,13 @@ const CrearCursoAdmin = () => {
     nombre: '',
     presupuesto: 0
   });
-
+  const navigate = useNavigate();
   useEffect(() => {
     (async () => {
       const response = await listarCuentas();
+      if(response.e === '3'){
+        navigate("/login");
+      }
       setProfesores(response.usuarios.filter((e: Usuario) => e.rol === 'docente'))
       setEstudiantes(response.usuarios.filter((e: Usuario) => e.rol === 'estudiante'))
     })()

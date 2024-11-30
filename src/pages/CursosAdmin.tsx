@@ -2,18 +2,21 @@ import { useEffect, useState } from "react"
 import PencilSVG from "../assets/svgs/pencil"
 import PlusSVG from "../assets/svgs/plus"
 import { Curso, eliminarCurso, listarCursos } from "../services/cursoService"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import XMark from "../assets/svgs/xmark"
 
 
 
 const CursosAdmin = () => {
   const [cursos, setCursos] = useState<Curso[]>([])
-
+  const navigate = useNavigate();
   useEffect(() => {
     (async () => {
       const response = await listarCursos();
       console.log(response);
+      if(response.e === '3'){
+        navigate("/login");
+      }
       setCursos(response)
     })()
   }, [])

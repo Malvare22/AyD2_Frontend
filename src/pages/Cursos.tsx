@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import { Curso, listarCursos } from "../services/cursoService";
 import CursoCard from "../components/CursoCard";
+import { useNavigate } from "react-router-dom";
 
 
 const Cursos = () => {
     const [cursos, setCursos] = useState<Curso[]>([])
-
+    const navigate = useNavigate();
     useEffect(() => {
         (async () => {
             const response = await listarCursos()
-
+            if(response.e === '3'){
+                navigate("/login");
+              }
             setCursos(response)
 
         })();

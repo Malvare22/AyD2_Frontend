@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { listarCuentas, modificarCuenta, Usuario } from "../services/usuarioService";
+import { useNavigate } from "react-router-dom";
 
 
 interface EditableRowProps {
@@ -126,12 +127,14 @@ const EditableRow: React.FC<EditableRowProps> = ({
 const Usuarios = () => {
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
     const [editingId, setEditingId] = useState<string | null>(null);
-
+    const navigate = useNavigate();
     useEffect(() => {
         (async () => {
             const response = await listarCuentas();
             console.log(response);
-
+            if(response.e === '3'){
+                navigate("/login");
+              }
             setUsuarios(response.usuarios);
         })()
     }, [])

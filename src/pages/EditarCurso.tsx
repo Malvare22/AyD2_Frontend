@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { listarCuentas, Usuario } from '../services/usuarioService'
 import SearchSelect from '../components/searchSelect';
 import { asignarDocente, asignarEstudiante, CursoRequest, modificarCurso, obtenerDetalle, verAsignados } from '../services/cursoService';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const EditarCursoAdmin = () => {
   const [profesores, setProfesores] = useState<Usuario[]>([]);
@@ -24,19 +24,28 @@ const EditarCursoAdmin = () => {
     presupuesto: 0
   });
   const {id} = useParams();
-
+  const navigate = useNavigate();
   useEffect(() => {
     (async () => {
       const response = await listarCuentas();
+      if(response.e === '3'){
+        navigate("/login");
+      }
       setProfesores(response.usuarios.filter((e: Usuario) => e.rol === 'docente'))
       setEstudiantes(response.usuarios.filter((e: Usuario) => e.rol === 'estudiante'))
       const response2 = await verAsignados({id: parseInt(id!)});
       console.log(response2);
+      if(response2.e === '3'){
+        navigate("/login");
+      }
       setProfeSelec(response2.asignaciones ?? []);
       setEstuSelec(response2.matriculados ?? []);
       const responseC = await obtenerDetalle({
         ...curso, id: parseInt(id!)
       })
+      if(responseC.e === '3'){
+        navigate("/login");
+      }
       setCurso({...responseC.curso, estado_curso: responseC.curso.estado});      
       
     })()
