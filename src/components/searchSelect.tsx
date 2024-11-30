@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { Usuario } from "../services/usuarioService";
 
 interface SearchObjs<T> {
@@ -10,8 +10,13 @@ interface SearchObjs<T> {
 
 
 const SearchSelect: FC<SearchObjs<Usuario>> = ({ elements, elementsSelected, setElementsSelected, title }) => {
-    const [suggestions, setSuggestions] = useState<Usuario[]>(elements)
+    
+    const [suggestions, setSuggestions] = useState<Usuario[]>([])
     const [search, setSearch] = useState<string>('');
+
+    useEffect(()=>{        
+        setSuggestions(elements)
+    }, [elements])
 
     const searchNombre = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
@@ -22,9 +27,15 @@ const SearchSelect: FC<SearchObjs<Usuario>> = ({ elements, elementsSelected, set
         }
     }
 
+    const add = (p: Usuario) => {
+        if(!elementsSelected.some(e => e.id === p.id)){
+            setElementsSelected([...elementsSelected, p])
+        }
+    }
+
     return <>
 
-        <div>
+        <div className="max-h-1/3">
             <label className="block font-medium mb-2">{title}</label>
             <div className="relative">
                 <input
@@ -35,12 +46,12 @@ const SearchSelect: FC<SearchObjs<Usuario>> = ({ elements, elementsSelected, set
                     onChange={e => searchNombre(e)}
                 />
             </div>
-            <div className="mt-2 bg-gray-200 rounded">
+            <div className="mt-2 bg-gray-200 rounded h-3/4 overflow-auto">
                 {suggestions.map(person => (
                     <button
                         key={person.id}
                         className="w-full text-left px-4 py-2 hover:bg-gray-300 transition-colors"
-                        onClick={() => setElementsSelected([...elementsSelected, person])}
+                        onClick={() => add(person)}
                     >
                         {person.nombres} {person.apellidos}
                     </button>

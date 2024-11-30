@@ -3,6 +3,7 @@ import { listarCuentas, Usuario } from '../services/usuarioService'
 import SearchSelect from '../components/searchSelect';
 import { asignarDocente, asignarEstudiante, CursoRequest, modificarCurso, obtenerDetalle, verAsignados } from '../services/cursoService';
 import { useNavigate, useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const EditarCursoAdmin = () => {
   const [profesores, setProfesores] = useState<Usuario[]>([]);
@@ -100,6 +101,11 @@ const EditarCursoAdmin = () => {
         })
       }
       await modificarCurso({...curso, id: parseInt(id!)});
+      Swal.fire({
+        title: "Se ha actualizado exitosamente",
+      }).then(()=>{
+        navigate('/cursos-admin')
+      })
     } catch (error) {
       alert(error)
     }
@@ -109,7 +115,7 @@ const EditarCursoAdmin = () => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">CREAR CURSO</h1>
+        <h1 className="text-2xl font-bold">EDITAR CURSO</h1>
         <button onClick={() => guardar()} className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded transition-colors">
           GUARDAR
         </button>
@@ -206,10 +212,6 @@ const EditarCursoAdmin = () => {
             />
           </div>
 
-
-        </div>
-
-        <div className='space-y-6'>
           <div>
             <label className="block font-medium mb-2">FECHA DE INICIO:</label>
             <input
@@ -231,6 +233,10 @@ const EditarCursoAdmin = () => {
               className="w-full px-4 py-2 bg-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-gray-400"
             />
           </div>
+        </div>
+
+        <div className='space-y-6'>
+          
 
           <div>
             <label className="block font-medium mb-2">IMAGEN DEL CURSO:</label>
