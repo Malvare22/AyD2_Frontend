@@ -16,6 +16,8 @@ export interface CursoRequest {
   imagen?: File;
   id_estudiante?: number;
   id_docente?: number;
+  estado_matricula?: "aprobado" | "rechazado" | "pendiente";
+  comentarios?: string;
 }
 
 export interface UserSession {
@@ -130,4 +132,12 @@ export async function realizarAccion(params: Omit<CursoRequest, "orden">) {
 
 export async function obtenerDetalle(params: Omit<CursoRequest, "orden">) {
   return sendCursoRequest({ ...params, orden: "detalle" });
+}
+
+export async function listarSolicitudes() {
+  return sendCursoRequest({ orden: "ver_solicitudes" });
+}
+
+export async function confirmarMatricula(params: Omit<CursoRequest, "orden">) {
+  return sendCursoRequest({ ...params, orden: "confirmar_matricula"});
 }

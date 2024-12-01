@@ -5,6 +5,7 @@ import HomeSVG from "../assets/svgs/home";
 import BookSVG from "../assets/svgs/book";
 import { Link } from "react-router-dom";
 import PersonsSVG from "../assets/svgs/persons";
+import CheckSVG from "../assets/svgs/check";
 
 type HeaderOptionProps = {
   icon: ReactNode;
@@ -31,7 +32,7 @@ function Header() {
 
   return (
     <div className="bg-[#BD0011] md:h-40 md:flex align-middle items-center justify-between px-10 py-4">
-      <div className="flex justify-center align-middle items-center space-x-6">
+      <div className="flex justify-center align-middle items-center space-x-3">
         <div>
           <img src={Logo} width={"100px"}></img>
         </div>
@@ -72,6 +73,11 @@ function Header() {
               icon={<PersonsSVG />}
               text="Usuarios"
               to="/usuarios"
+            ></HeaderOption>
+            <HeaderOption
+              icon={<CheckSVG />}
+              text="Solicitudes"
+              to="/solicitudes"
             ></HeaderOption>
           </div>
         </>
