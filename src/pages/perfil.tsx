@@ -57,7 +57,7 @@ const Contain = () => {
         <div className="items-center p-10 space-y-8">
           {/** Etiquetas alineadas y columnas con estructura */}
           <div className="flex flex-row">
-            <div className="font-semibold text-bolder pr-4 mt-8">
+            <div className="font-semibold text-bolder pr-4">
               Código:
             </div>
             <div className="text-gray-800">{user.codigo}</div>
