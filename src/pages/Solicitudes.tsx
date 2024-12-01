@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import {
     listarCuentas,
-    modificarCuenta,
     Usuario,
 } from "../services/usuarioService";
 import { useNavigate } from "react-router-dom";
@@ -159,11 +158,6 @@ const Solicitudes = () => {
 
         })();
     }, []);
-
-    const setSoli = (x: Solicitud) => {
-        const other = solicitudes.filter(e => e.id != x.id);
-        setSolicitudes([...other, x])
-    }
 
     const reload = () =>{
         navigate(0);
