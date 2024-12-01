@@ -68,7 +68,7 @@ export const router = createBrowserRouter([
         },
         {
           path: 'perfil',
-          element: <><Header/><div className="md:p-20"><div className="border border-black"><LayoutLogin><Perfil/></LayoutLogin></div></div><Footer/></>
+          element: <><Header/><div className="md:p-20"><div className="border border-black"><Perfil/></div></div><Footer/></>
         },
         {
           path: 'cambiarContrasenia',
