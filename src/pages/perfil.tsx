@@ -1,9 +1,9 @@
 function Perfil() {
   return (
     <>
-      <div className="my-24">
+      <div className="md:my-24">
         <div className="text-4xl text-center font-bold my-10">Perfil</div>
-        <div className="w-10/12 mx-auto border border-black rounded-lg shadow-lg p-6 text-2xl bg-white h-full mb-24">
+        <div className="md:w-10/12 mx-auto border border-black rounded-lg shadow-lg p-6 text-xl bg-white mb-24">
           {/** Cabecera estética con fondo limpio */}
           <div className="grid grid-cols-2 gap-y-4 items-center p-10 space-y-8">
             {/** Etiquetas alineadas y columnas con estructura */}

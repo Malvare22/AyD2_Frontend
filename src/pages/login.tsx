@@ -16,7 +16,7 @@ function Login() {
     try {
       await loginUser(fields).then((data) => {
         if (data.e == 0) {
-          throw new Error(data.mensaje);
+          throw new Error(data.mensaje + " revisa que el correo y contraseña sean válidos");
         }
         else{
           localStorage.setItem('USER_TOKEN', data.session);

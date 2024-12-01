@@ -7,7 +7,7 @@ interface Props {
 
 function LayoutLogin({ children }: Props) {
   return (
-    <div className="sm:flex h-screen align-middle">
+    <div className="md:flex md:h-screen align-middle">
       <div className="w-full sm:w-6/12 h-full">
         {/* Contenido */}
             {children}
