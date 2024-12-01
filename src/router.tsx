@@ -14,6 +14,7 @@ import CursosAdmin from "./pages/CursosAdmin";
 import CrearCursoAdmin from "./pages/CrearCurso";
 import ValidarCodigo from "./pages/recuperarContrasenia/ValidarCodigo";
 import EditarCursoAdmin from "./pages/EditarCurso";
+import Solicitudes from "./pages/Solicitudes";
 import Perfil from "./pages/perfil";
 import LayoutGeneral from "./layouts/layoutGeneral";
 
@@ -61,6 +62,13 @@ export const router = createBrowserRouter([
         {
           path: 'cursos-editar/:id',
           element: <LayoutGeneral><EditarCursoAdmin/></LayoutGeneral>
+        },
+        {
+          path: 'solicitudes',
+          element: <>
+            <Header/><Solicitudes/><Footer/>
+          
+          </>
         },
         {
           path: 'login',

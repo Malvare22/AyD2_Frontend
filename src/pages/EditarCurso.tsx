@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import { listarCuentas, Usuario } from '../services/usuarioService'
 import SearchSelect from '../components/searchSelect';
-import { asignarDocente, asignarEstudiante, CursoRequest, modificarCurso, obtenerDetalle, verAsignados } from '../services/cursoService';
+import { asignarDocente, asignarEstudiante, CursoRequest, desAsignarDocente, desAsignarEstudiante, modificarCurso, obtenerDetalle, verAsignados } from '../services/cursoService';
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
@@ -10,6 +10,8 @@ const EditarCursoAdmin = () => {
   const [estudiantes, setEstudiantes] = useState<Usuario[]>([]);
   const [profeSelec, setProfeSelec] = useState<Usuario[]>([]);
   const [estuSelec, setEstuSelec] = useState<Usuario[]>([]);
+  const [estuOrig, setEstuOrig] = useState<Usuario[]>([]);
+  const [profOrig, setProfOrig] = useState<Usuario[]>([]);
   const [timeFormat, setTimeFormat] = useState<'AM' | 'PM'>('AM')
   const [curso, setCurso] = useState<CursoRequest>({
     orden: 'crear',
@@ -34,6 +36,7 @@ const EditarCursoAdmin = () => {
       }
       setProfesores(response.usuarios.filter((e: Usuario) => e.rol === 'docente'))
       setEstudiantes(response.usuarios.filter((e: Usuario) => e.rol === 'estudiante'))
+     
       const response2 = await verAsignados({id: parseInt(id!)});
       console.log(response2);
       if(response2.e === '3'){
@@ -41,6 +44,8 @@ const EditarCursoAdmin = () => {
       }
       setProfeSelec(response2.asignaciones ?? []);
       setEstuSelec(response2.matriculados ?? []);
+      setProfOrig(response2.asignaciones ?? [])
+      setEstuOrig(response2.matriculados ?? [])
       const responseC = await obtenerDetalle({
         ...curso, id: parseInt(id!)
       })
@@ -93,12 +98,30 @@ const EditarCursoAdmin = () => {
           id: parseInt(id!),
           id_estudiante: estudiante.id
         })
+      }      
+      for(const estudiante of estuOrig){
+        if(!estuSelec.some(es => es.id === estudiante.id)){
+          console.log("not found", estudiante);
+          desAsignarEstudiante({
+            id: parseInt(id!),
+            id_estudiante: estudiante.id
+          })
+        }
       }
       for(const docente of profeSelec){
         await asignarDocente({
           id: parseInt(id!),
           id_docente: docente.id
         })
+      }
+      for(const docente of profOrig){
+        if(!profeSelec.some(es => es.id === docente.id)){
+          console.log("not found", docente);
+          desAsignarDocente({
+            id: parseInt(id!),
+            id_docente: docente.id
+          })
+        }
       }
       await modificarCurso({...curso, id: parseInt(id!)});
       Swal.fire({

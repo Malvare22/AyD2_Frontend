@@ -22,6 +22,7 @@ function Login() {
           localStorage.setItem('USER_TOKEN', data.session);
           localStorage.setItem('USER_TYPE', data.rol);
           localStorage.setItem('USER_EMAIL', data.correo);
+          localStorage.setItem('USER_ID', data.id);
           navigate('/');
         }
       });

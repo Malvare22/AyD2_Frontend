@@ -16,6 +16,8 @@ export interface CursoRequest {
   imagen?: File;
   id_estudiante?: number;
   id_docente?: number;
+  estado_matricula?: "aprobado" | "rechazado" | "pendiente";
+  comentarios?: string;
 }
 
 export interface UserSession {
@@ -84,6 +86,18 @@ export async function asignarEstudiante(params: Omit<CursoRequest, "orden">) {
   return sendCursoRequest({ ...params, orden: "asignar_estudiante" });
 }
 
+export async function desAsignarEstudiante(params: Omit<CursoRequest, "orden">) {
+  return sendCursoRequest({ ...params, orden: "desasignar_estudiante" });
+}
+
+export async function desAsignarDocente(params: Omit<CursoRequest, "orden">) {
+  return sendCursoRequest({ ...params, orden: "desasignar_docente" });
+}
+
+export async function matricular(params: Omit<CursoRequest, "orden">) {
+  return sendCursoRequest({ ...params, orden: "matricular" });
+}
+
 export async function asignarDocente(params: Omit<CursoRequest, "orden">) {
   return sendCursoRequest({ ...params, orden: "asignar_docente" });
 }
@@ -118,4 +132,12 @@ export async function realizarAccion(params: Omit<CursoRequest, "orden">) {
 
 export async function obtenerDetalle(params: Omit<CursoRequest, "orden">) {
   return sendCursoRequest({ ...params, orden: "detalle" });
+}
+
+export async function listarSolicitudes() {
+  return sendCursoRequest({ orden: "ver_solicitudes" });
+}
+
+export async function confirmarMatricula(params: Omit<CursoRequest, "orden">) {
+  return sendCursoRequest({ ...params, orden: "confirmar_matricula"});
 }
