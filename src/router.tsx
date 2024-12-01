@@ -15,6 +15,8 @@ import CrearCursoAdmin from "./pages/CrearCurso";
 import ValidarCodigo from "./pages/recuperarContrasenia/ValidarCodigo";
 import EditarCursoAdmin from "./pages/EditarCurso";
 import Solicitudes from "./pages/Solicitudes";
+import Perfil from "./pages/perfil";
+import LayoutGeneral from "./layouts/layoutGeneral";
 
 export const router = createBrowserRouter([
     {
@@ -31,11 +33,11 @@ export const router = createBrowserRouter([
         {
           path: '',
           index: true,
-          element: <><Header/><Inicio /><Footer/></>
+          element: <LayoutGeneral><Inicio /></LayoutGeneral>
         },
         {
           path: '/usuarios',
-          element: <><Header/><Usuarios /><Footer/></>
+          element: <LayoutGeneral><Usuarios/></LayoutGeneral>
         },
         {
           path: '/usuarios/registrar',
@@ -43,23 +45,23 @@ export const router = createBrowserRouter([
         },
         {
           path: '/cursos',
-          element: <><Header/><Cursos /><Footer/></>
+          element: <LayoutGeneral><Cursos/></LayoutGeneral>
         },
         {
           path: '/cursos/:id',
-          element: <><Header/><MatricularCurso /><Footer/></>
+          element: <LayoutGeneral><MatricularCurso/></LayoutGeneral>
         },
         {
           path: 'cursos-admin',
-          element: <><Header/><CursosAdmin /><Footer/></>
+          element: <LayoutGeneral><CursosAdmin /></LayoutGeneral>
         },
         {
           path: 'cursos-crear',
-          element: <><Header/><CrearCursoAdmin /><Footer/></>
+          element: <LayoutGeneral><CrearCursoAdmin/></LayoutGeneral>
         },
         {
           path: 'cursos-editar/:id',
-          element: <><Header/><EditarCursoAdmin /><Footer/></>
+          element: <LayoutGeneral><EditarCursoAdmin/></LayoutGeneral>
         },
         {
           path: 'solicitudes',
@@ -71,6 +73,10 @@ export const router = createBrowserRouter([
         {
           path: 'login',
           element: <LayoutLogin><Login/></LayoutLogin>
+        },
+        {
+          path: 'perfil',
+          element: <><Header/><div className="md:p-20"><div className="border border-black"><Perfil/></div></div><Footer/></>
         },
         {
           path: 'cambiarContrasenia',

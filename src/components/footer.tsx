@@ -6,7 +6,7 @@ import logo from "../assets/images/Logo_Sistemas.png";
 
 function Footer() {
   return (
-    <div className="bg-[#BD0011] flex justify-center align-middle items-center h-72 space-x-24">
+    <div className="bg-[#BD0011] flex justify-center align-middle items-center space-x-24 py-4">
       <div>
         <img src={logo} width={"180px"}></img>
       </div>

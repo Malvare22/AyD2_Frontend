@@ -91,12 +91,12 @@ function Header() {
           >
             Iniciar Sesión
           </button>
-          <button
+          {/* <button
             className="px-6 py-3 bg-black text-white rounded"
             onClick={() => navigate("/registro")}
           >
             Registrarse
-          </button>
+          </button> */}
         </div>
       ) : (
         <div className="flex justify-center">

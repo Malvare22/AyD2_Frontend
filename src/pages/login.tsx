@@ -16,7 +16,7 @@ function Login() {
     try {
       await loginUser(fields).then((data) => {
         if (data.e == 0) {
-          throw new Error(data.mensaje);
+          throw new Error(data.mensaje + " revisa que el correo y contraseña sean válidos");
         }
         else{
           localStorage.setItem('USER_TOKEN', data.session);
@@ -38,7 +38,7 @@ function Login() {
   return (
     <>
       {/* Contenido */}
-      <div className="flex justify-end h-0.5/6">
+      {/* <div className="flex justify-end h-0.5/6">
         <div className="flex space-x-3 p-10">
           <div className="text-xl">No tines una Cuenta?</div>
           <div
@@ -48,10 +48,10 @@ function Login() {
             Registrate
           </div>
         </div>
-      </div>
-      <div className="flex flex-col justify-center h-5/6 m-[-40px]">
+      </div> */}
+      <div className="flex h-full w-full align-middle items-center">
         <form
-          className="flex justify-center align-middle"
+          className="flex justify-center align-middle w-full"
           onSubmit={(e) => {
             e.preventDefault();
             onSubmit();
