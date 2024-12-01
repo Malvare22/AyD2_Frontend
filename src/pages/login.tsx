@@ -23,6 +23,7 @@ function Login() {
           localStorage.setItem('USER_TYPE', data.rol);
           localStorage.setItem('USER_EMAIL', data.correo);
           localStorage.setItem('USER_ID', data.id);
+          localStorage.setItem('USER', JSON.stringify(data))
           navigate('/');
         }
       });
