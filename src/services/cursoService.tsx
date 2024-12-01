@@ -84,6 +84,18 @@ export async function asignarEstudiante(params: Omit<CursoRequest, "orden">) {
   return sendCursoRequest({ ...params, orden: "asignar_estudiante" });
 }
 
+export async function desAsignarEstudiante(params: Omit<CursoRequest, "orden">) {
+  return sendCursoRequest({ ...params, orden: "desasignar_estudiante" });
+}
+
+export async function desAsignarDocente(params: Omit<CursoRequest, "orden">) {
+  return sendCursoRequest({ ...params, orden: "desasignar_docente" });
+}
+
+export async function matricular(params: Omit<CursoRequest, "orden">) {
+  return sendCursoRequest({ ...params, orden: "matricular" });
+}
+
 export async function asignarDocente(params: Omit<CursoRequest, "orden">) {
   return sendCursoRequest({ ...params, orden: "asignar_docente" });
 }
