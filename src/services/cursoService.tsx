@@ -18,6 +18,7 @@ export interface CursoRequest {
   id_docente?: number;
   estado_matricula?: "aprobado" | "rechazado" | "pendiente";
   comentarios?: string;
+  ruta_imagen?: string | null;
 }
 
 export interface UserSession {

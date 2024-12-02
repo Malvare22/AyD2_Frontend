@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import { listarCuentas, Usuario } from '../services/usuarioService'
 import SearchSelect from '../components/searchSelect';
-import { crearCurso, CursoRequest } from '../services/cursoService';
+import { asignarDocente, asignarEstudiante, crearCurso, Curso, CursoRequest, listarCursos } from '../services/cursoService';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
@@ -11,6 +11,7 @@ const CrearCursoAdmin = () => {
   const [profeSelec, setProfeSelec] = useState<Usuario[]>([]);
   const [estuSelec, setEstuSelec] = useState<Usuario[]>([]);
   const [timeFormat, setTimeFormat] = useState<'AM' | 'PM'>('AM')
+  const [cursosActuales, setCursosActuales] = useState<Curso[]>([]);
   const [curso, setCurso] = useState<CursoRequest>({
     orden: 'crear',
     cantidad_maxima_estudiantes: 0,
@@ -32,7 +33,8 @@ const CrearCursoAdmin = () => {
         navigate("/login");
       }
       console.log(response);
-
+      const responseC = await listarCursos();
+      setCursosActuales(responseC);
       setProfesores(response.usuarios.filter((e: Usuario) => e.rol === 'docente'))
       setEstudiantes(response.usuarios.filter((e: Usuario) => e.rol === 'estudiante'))
     })()
@@ -74,6 +76,22 @@ const CrearCursoAdmin = () => {
   const guardar = async () => {
     try {
       await crearCurso(curso);
+      const cursos = await listarCursos();
+      const id = cursos.find((e: Curso) => !cursosActuales.some(c => c.id === e.id)) 
+      console.log(id);
+      
+      for(const estudiante of estuSelec){
+        await asignarEstudiante({
+          id: parseInt(id.id),
+          id_estudiante: estudiante.id
+        })
+      }
+      for(const docente of profeSelec){
+        await asignarDocente({
+          id: parseInt(id.id),
+          id_docente: docente.id
+        })
+      }
       Swal.fire({
         title: "Se ha creado exitosamente",
       }).then(() => {
