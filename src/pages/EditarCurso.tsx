@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { listarCuentas, Usuario } from '../services/usuarioService'
 import SearchSelect from '../components/searchSelect';
 import { asignarDocente, asignarEstudiante, CursoRequest, desAsignarDocente, desAsignarEstudiante, modificarCurso, obtenerDetalle, verAsignados } from '../services/cursoService';
@@ -13,6 +13,8 @@ const EditarCursoAdmin = () => {
   const [estuOrig, setEstuOrig] = useState<Usuario[]>([]);
   const [profOrig, setProfOrig] = useState<Usuario[]>([]);
   const [timeFormat, setTimeFormat] = useState<'AM' | 'PM'>('AM')
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [origFile, setOrigFile] = useState<File>(new File([],''));
   const [curso, setCurso] = useState<CursoRequest>({
     orden: 'crear',
     cantidad_maxima_estudiantes: 0,
@@ -28,6 +30,17 @@ const EditarCursoAdmin = () => {
   });
   const {id} = useParams();
   const navigate = useNavigate();
+
+  const cargarArchivoPorDefecto = async (url: string) => { 
+    // Reemplaza con la URL de tu archivo 
+    const respuesta = await fetch(url); 
+    const blob = await respuesta.blob(); 
+    const archivo = new File([blob], 'imagen.jpg', { type: blob.type }); 
+    setOrigFile(archivo);
+    const dataTransfer = new DataTransfer(); dataTransfer.items.add(archivo); 
+    fileInputRef.current!.files = dataTransfer.files; 
+  }; 
+
   useEffect(() => {
     (async () => {
       const response = await listarCuentas();
@@ -54,6 +67,11 @@ const EditarCursoAdmin = () => {
       }
       setCurso({...responseC.curso, estado_curso: responseC.curso.estado});      
       
+      
+      
+      await cargarArchivoPorDefecto(responseC.curso.ruta_imagen);
+
+
     })()
   }, [])
 
@@ -123,7 +141,16 @@ const EditarCursoAdmin = () => {
           })
         }
       }
-      await modificarCurso({...curso, id: parseInt(id!)});
+      if(fileInputRef.current?.files?.length === 0){
+        const dataTransfer = new DataTransfer(); 
+        dataTransfer.items.add(origFile); 
+        fileInputRef.current!.files = dataTransfer.files;
+      }
+
+      console.log(fileInputRef.current?.files);
+      
+
+      await modificarCurso({...curso, id: parseInt(id!), imagen: fileInputRef.current?.files? fileInputRef.current?.files[0] : new File([], '')});
       Swal.fire({
         title: "Se ha actualizado exitosamente",
       }).then(()=>{
@@ -269,6 +296,7 @@ const EditarCursoAdmin = () => {
               onChange={handleImageChange}
               accept="image/*"
               className="w-full px-4 py-2 bg-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-gray-400"
+              ref={fileInputRef}
             />
           </div>
           <SearchSelect elements={profesores} elementsSelected={profeSelec} setElementsSelected={setProfeSelec} title='DOCENTE' />
