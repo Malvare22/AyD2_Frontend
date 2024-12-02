@@ -11,7 +11,7 @@ function LayoutGeneral({children} : Props) {
         <Header />
         <main className="flex-grow">
           <div className="md:p-20">
-            <div className="border border-black">
+            <div className="">
               {children}
             </div>
           </div>
