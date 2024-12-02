@@ -24,17 +24,18 @@ function Registro() {
     try{
       await registerUser(data).then(
         (res) => {
-          if(res.e == 1){
+          console.log(res)
+          if(res && res.e == 1){
             navigate('/usuarios');
           }
           else{
-            throw new Error('Error al crear el usuario');
+            throw new Error();
           }
         }
       )
     }
-    catch(error){
-      alert(error);
+    catch{
+      alert('Error al crear el usuario, asegurese de que el correo y código ingresado ya no se encuentre registrado');
     }
     
   };
@@ -92,7 +93,7 @@ function Registro() {
 
             <div className="flex space-x-5">
               <div className="w-full">
-                <Input label="Contraseña" {...register("contrasena")} />
+                <Input label="Contraseña" type="password" {...register("contrasena")} />
                 {errors.contrasena && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.contrasena.message}
