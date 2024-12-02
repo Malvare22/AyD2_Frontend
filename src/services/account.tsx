@@ -86,6 +86,7 @@ export const registerUser = async (
     id: "string",
   };
 
-  const response = await axiosClient.post("/api/cuenta", body);
-  return response.data;
+    const response = await axiosClient.post("/api/cuenta", body);
+    return response.data;
+
 };

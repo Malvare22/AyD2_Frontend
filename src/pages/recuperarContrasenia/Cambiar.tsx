@@ -61,8 +61,8 @@ function Cambiar() {
               Nueva Contraseña
             </div>
             <div className="space-y-14">
-                <Input label="Nueva Contraseña" value={contrasenai.a} onChange={(e) => setContrasenia({...contrasenai, 'a' : e.currentTarget.value})}></Input>
-                <Input label="Confirmación Nueva Contraseña" value={contrasenai.b} onChange={(e) => setContrasenia({...contrasenai, 'b' : e.currentTarget.value})}></Input>
+                <Input label="Nueva Contraseña" type="password" value={contrasenai.a} onChange={(e) => setContrasenia({...contrasenai, 'a' : e.currentTarget.value})}></Input>
+                <Input label="Confirmación Nueva Contraseña" type="password" value={contrasenai.b} onChange={(e) => setContrasenia({...contrasenai, 'b' : e.currentTarget.value})}></Input>
             </div>
             <div className="flex justify-center mt-20">
               <Button onClick={onSubmit} disabled={disable()} text="Cambiar"/>

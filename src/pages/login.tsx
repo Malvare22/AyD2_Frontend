@@ -76,7 +76,7 @@ function Login() {
               <div>
                 <Input
                   label="Contraseña"
-                  type="clave"
+                  type="password"
                   value={fields.clave}
                   onChange={(e) =>
                     setFields({ ...fields, ["clave"]: e.currentTarget.value })
