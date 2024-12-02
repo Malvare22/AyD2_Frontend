@@ -17,10 +17,12 @@ import EditarCursoAdmin from "./pages/EditarCurso";
 import Solicitudes from "./pages/Solicitudes";
 import Perfil from "./pages/perfil";
 import LayoutGeneral from "./layouts/layoutGeneral";
+import Error from "./pages/error";
 
 export const router = createBrowserRouter([
     {
         path: '/',
+        errorElement: <Error/>,
         children: [
         {
             path: '1',
