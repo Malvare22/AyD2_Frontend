@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Curso, matricular, obtenerDetalle } from "../services/cursoService";
+import { Curso, matricular, obtenerDetalle, verAsignados } from "../services/cursoService";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -7,10 +7,14 @@ import Swal from "sweetalert2";
 const MatricularCurso = () => {
     const [curso, setCurso] = useState<Curso>();
     const { id } = useParams();
+    const [condition, setCondition] = useState<null | boolean>(null);
     useEffect(() => {
         (async () => {
-            const response = await obtenerDetalle({ id: parseInt(id!) })
+            const response = await obtenerDetalle({ id: parseInt(id!) });
             setCurso(response.curso)
+            console.log(response)
+                  //const response2 = await verAsignados({id: parseInt(id!)});
+
         })();
     }, [])
 
@@ -56,16 +60,16 @@ const MatricularCurso = () => {
                     {curso?.descripcion}
                 </p>
 
-                <div className="text-gray-600 mb-8">
+                {<div className="text-gray-600 mb-8">
                     Inicia el {curso?.fecha_inicio}
-                </div>
-
+                </div>}
+{/* 
                 <button
                     onClick={()=>matricularCurso()}
                     className="inline-flex items-center text-red-600 hover:text-red-700 font-medium"
                 >
                     Matricular curso {">"}
-                </button>
+                </button> */}
             </div>
 
         </main>

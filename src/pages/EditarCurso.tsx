@@ -24,7 +24,7 @@ const EditarCursoAdmin = () => {
     fecha_inicio: new Date().toISOString().split('T')[0],
     horario: '',
     salon: '',
-    imagen: undefined,
+    ruta: undefined,
     nombre: '',
     presupuesto: 0
   });
@@ -51,7 +51,6 @@ const EditarCursoAdmin = () => {
       setEstudiantes(response.usuarios.filter((e: Usuario) => e.rol === 'estudiante'))
      
       const response2 = await verAsignados({id: parseInt(id!)});
-      console.log(response2);
       if(response2.e === '3'){
         navigate("/login");
       }
@@ -66,7 +65,7 @@ const EditarCursoAdmin = () => {
         navigate("/login");
       }
       setCurso({...responseC.curso, estado_curso: responseC.curso.estado});      
-      
+      console.log(response2.matriculados)
       
       
       await cargarArchivoPorDefecto(responseC.curso.ruta_imagen);
