@@ -5,8 +5,6 @@ import { Curso, eliminarCurso, listarCursos } from "../services/cursoService"
 import { Link, useNavigate } from "react-router-dom"
 import XMark from "../assets/svgs/xmark"
 
-
-
 const CursosAdmin = () => {
   const [cursos, setCursos] = useState<Curso[]>([])
   const navigate = useNavigate();

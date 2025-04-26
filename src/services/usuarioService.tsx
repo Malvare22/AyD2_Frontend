@@ -1,7 +1,7 @@
 import { UserSession } from "./cursoService";
 
 type UsuarioRol = "administrador" | "estudiante" | "docente";
-type Orden = "crear" | "modificar" | "listar";
+type Orden = "crear" | "modificar" | "listar" | 'deshabilitar';
 
 interface UsuarioRequest {
   correo_cuenta?: string;
@@ -38,10 +38,8 @@ const API_URL: string = import.meta.env.VITE_BACKEND_URL;
     token: "",
   };
 
-  console.log('EPAAA')
-
   body = { ...body, ...sesion, correo_cuenta: body.correo };
-
+  
   const response = await fetch(`${API_URL}/api/cuenta`, {
     method: "POST",
     headers: {
@@ -50,15 +48,12 @@ const API_URL: string = import.meta.env.VITE_BACKEND_URL;
     },
     body: JSON.stringify(body),
   });
-
-  
   if (!response.ok) {
     throw new Error(`Error: ${response.status} ${await response.text()}`);
   }
-
+  
   const result = await response.json();
-
-  console.log('y->',result)
+  console.log(result)
 
   if (result.e != 1) {
     throw new Error(`Error: ${result.message}`);
@@ -103,5 +98,19 @@ export async function modificarCuenta(
 export async function listarCuentas(): Promise<any> {
   return postCuenta({
     orden: "listar",
+  });
+}
+
+/**
+ * Modifica una cuenta de usuario existente.
+ * @param data Datos necesarios para eliminar la cuenta (incluye `id`).
+ * @returns Respuesta de la API.
+ */
+export async function eliminarCuenta(
+  data: Omit<UsuarioRequest, "orden"> & { id: number }
+): Promise<any> {
+  return postCuenta({
+    ...data,
+    orden: "deshabilitar",
   });
 }
