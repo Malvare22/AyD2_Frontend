@@ -2,6 +2,19 @@ import { z } from "zod";
 import { registerSchema } from "../forms/registerSchema";
 import axiosClient from "./axiosClient";
 
+export type BodyAccounts = {
+  correo_cuenta: string
+  session: string
+  correo: string
+  nombres: string
+  apellidos: string
+  codigo: string
+  rol: string
+  clave: string
+  orden: string
+  id: string
+}
+
 export const loginUser = async (account: { correo: string; clave: string }) => {
   const response = await axiosClient.post("/api/login", account);
   return response.data;
@@ -73,7 +86,7 @@ export interface RegisterUser {
 export const registerUser = async (
   data: z.infer<typeof registerSchema>
 ) => {
-  const body: RegisterUser = {
+  const body: BodyAccounts = {
     correo_cuenta: data.correo,
     session: localStorage.getItem("USER_TOKEN")!,
     correo: localStorage.getItem("USER_EMAIL")!,

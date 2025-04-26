@@ -1,26 +1,6 @@
 const API_KEY: string = import.meta.env.VITE_API_KEY;
 const API_URL: string = import.meta.env.VITE_BACKEND_URL;
 
-export interface CursoRequest {
-  orden: string;
-  id?: number;
-  nombre?: string;
-  descripcion?: string;
-  presupuesto?: number;
-  cantidad_maxima_estudiantes?: number;
-  fecha_inicio?: string;
-  fecha_fin?: string;
-  horario?: string;
-  salon?: string;
-  estado_curso?: "activo" | "inactivo" | "completado";
-  imagen?: File;
-  id_estudiante?: number;
-  id_docente?: number;
-  estado_matricula?: "aprobado" | "rechazado" | "pendiente";
-  comentarios?: string;
-  ruta_imagen?: string | null;
-}
-
 export interface UserSession {
   token: string;
   session: string;
@@ -33,30 +13,35 @@ export interface Curso {
   salon: string;
   estado: string;
   nombre: string;
-  horario: string;
-  fecha_fin: string;
-  descripcion: string;
-  presupuesto: number;
+  horario?: string;
+  fecha_fin?: string;
+  descripcion?: string;
+  presupuesto?: number;
   ruta_imagen: string;
-  fecha_inicio: string;
-  fecha_creacion: string;
-  fecha_actualizacion: string;
+  fecha_inicio?: string;
+  fecha_creacion?: string;
+  fecha_actualizacion?: string;
   cantidad_maxima_estudiantes: number;
+  estado_curso?: "activo" | "inactivo" | "completado";
+  estado_matricula?: "aprobado" | "rechazado" | "pendiente";
+  correo?: string,
+  orden?: string;
+  id_estudiante?: number
 }
 
+export interface CursoRequest extends Partial<Curso> {}
 
 async function sendCursoRequest(data: CursoRequest): Promise<any> {
   const formData = new FormData();
   const sesion: UserSession = {
-    correo: localStorage.getItem('USER_EMAIL')!,
-    session: localStorage.getItem('USER_TOKEN')!,
-    token: ''
-  }
-  data = {...data, ...sesion};
+    correo: localStorage.getItem("USER_EMAIL")!,
+    session: localStorage.getItem("USER_TOKEN")!,
+    token: "",
+  };
+  data = { ...data, ...sesion };
   Object.entries(data).forEach(([key, value]) => {
     if (value !== undefined) formData.append(key, value as string | Blob);
   });
-
 
   const response = await fetch(`${API_URL}/api/curso`, {
     method: "POST",
@@ -66,13 +51,17 @@ async function sendCursoRequest(data: CursoRequest): Promise<any> {
     body: formData,
   });
 
-
-
   if (!response.ok) {
-    throw new Error(`Error en la solicitud: ${response.status} - ${response.statusText}`);
+    throw new Error(`Error: ${response.status} ${await response.text()}`);
   }
 
-  return response.json();
+  const result = await response.json();
+
+  if (result.e && result.e != 1) {
+    throw new Error(`Error: ${result.message}`);
+  }
+
+  return result;
 }
 
 export async function crearCurso(params: Omit<CursoRequest, "orden">) {
@@ -140,5 +129,5 @@ export async function listarSolicitudes() {
 }
 
 export async function confirmarMatricula(params: Omit<CursoRequest, "orden">) {
-  return sendCursoRequest({ ...params, orden: "confirmar_matricula"});
+  return sendCursoRequest({ ...params, orden: "confirmar_matricula" });
 }

@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  listarCuentas,
-  modificarCuenta,
-  Usuario,
-} from "../services/usuarioService";
+import { listarCuentas, modificarCuenta, Usuario } from "../services/usuarioService";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 interface EditableRowProps {
   usuario: Usuario;
@@ -24,9 +21,7 @@ const EditableRow: React.FC<EditableRowProps> = ({
 }) => {
   const [editedUser, setEditedUser] = useState<Usuario>(usuario);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setEditedUser((prev) => ({
       ...prev,
@@ -138,14 +133,19 @@ const Usuarios = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    (async () => {
-      const response = await listarCuentas();
-      console.log(response);
+  const { data,error } = useQuery({
+    queryFn: () => listarCuentas(),
+    queryKey: ["List Users"],
+    retry: 2
+  });
 
-      setUsuarios(response.usuarios);
-    })();
-  }, []);
+  useEffect(() => {
+    if (data) setUsuarios(data.usuarios);
+  }, [data]);
+
+  useEffect(() => {
+    if (error) console.log(error);
+  }, [error]);
 
   const handleEdit = (codigo: string) => {
     setEditingId(codigo);
@@ -154,13 +154,10 @@ const Usuarios = () => {
   const handleSave = async (updatedUser: Usuario) => {
     try {
       const response = await modificarCuenta({ ...updatedUser });
-      console.log(response);
 
       // Actualiza el estado local después de la respuesta exitosa del backend
       setUsuarios((prev) =>
-        prev.map((user) =>
-          user.codigo === updatedUser.codigo ? updatedUser : user
-        )
+        prev.map((user) => (user.codigo === updatedUser.codigo ? updatedUser : user))
       );
       setEditingId(null);
     } catch (error) {
@@ -186,21 +183,13 @@ const Usuarios = () => {
         <table className="w-full border-collapse bg-white text-sm">
           <thead>
             <tr className="bg-gray-50">
-              <th className="border-b py-2 px-4 text-left font-semibold text-gray-600">
-                Nombres
-              </th>
+              <th className="border-b py-2 px-4 text-left font-semibold text-gray-600">Nombres</th>
               <th className="border-b py-2 px-4 text-left font-semibold text-gray-600">
                 Apellidos
               </th>
-              <th className="border-b py-2 px-4 text-left font-semibold text-gray-600">
-                Código
-              </th>
-              <th className="border-b py-2 px-4 text-left font-semibold text-gray-600">
-                Email
-              </th>
-              <th className="border-b py-2 px-4 text-left font-semibold text-gray-600">
-                Rol
-              </th>
+              <th className="border-b py-2 px-4 text-left font-semibold text-gray-600">Código</th>
+              <th className="border-b py-2 px-4 text-left font-semibold text-gray-600">Email</th>
+              <th className="border-b py-2 px-4 text-left font-semibold text-gray-600">Rol</th>
               <th className="border-b py-2 px-4 text-left font-semibold text-gray-600 w-[100px]"></th>
             </tr>
           </thead>

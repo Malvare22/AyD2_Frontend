@@ -1,7 +1,5 @@
 import { UserSession } from "./cursoService";
 
-
-
 type UsuarioRol = "administrador" | "estudiante" | "docente";
 type Orden = "crear" | "modificar" | "listar";
 
@@ -33,15 +31,15 @@ const API_URL: string = import.meta.env.VITE_BACKEND_URL;
  * Realiza una petición POST al endpoint de cuentas.
  * @param body Datos para enviar en el cuerpo de la solicitud.
  * @returns Respuesta de la API.
- */
-async function postCuenta(body: UsuarioRequest): Promise<any> {
-
+ */async function postCuenta(body: UsuarioRequest): Promise<any> {
   const sesion: UserSession = {
-    correo: localStorage.getItem('USER_EMAIL')!,
-    session: localStorage.getItem('USER_TOKEN')!,
-    token: ''
-  }  
-  
+    correo: localStorage.getItem("USER_EMAIL")!,
+    session: localStorage.getItem("USER_TOKEN")!,
+    token: "",
+  };
+
+  console.log('EPAAA')
+
   body = { ...body, ...sesion, correo_cuenta: body.correo };
 
   const response = await fetch(`${API_URL}/api/cuenta`, {
@@ -53,13 +51,22 @@ async function postCuenta(body: UsuarioRequest): Promise<any> {
     body: JSON.stringify(body),
   });
 
+  
   if (!response.ok) {
     throw new Error(`Error: ${response.status} ${await response.text()}`);
-    throw new Error(`Error: ${response.status}`);
   }
 
-  return response.json();
+  const result = await response.json();
+
+  console.log('y->',result)
+
+  if (result.e != 1) {
+    throw new Error(`Error: ${result.message}`);
+  }
+
+  return result;
 }
+
 
 /**
  * Crea una cuenta de usuario.
@@ -78,7 +85,9 @@ export async function crearCuenta(data: Omit<UsuarioRequest, "orden">): Promise<
  * @param data Datos necesarios para modificar la cuenta (incluye `id`).
  * @returns Respuesta de la API.
  */
-export async function modificarCuenta(data: Omit<UsuarioRequest, "orden"> & { id: number }): Promise<any> {
+export async function modificarCuenta(
+  data: Omit<UsuarioRequest, "orden"> & { id: number }
+): Promise<any> {
   return postCuenta({
     ...data,
     orden: "modificar",
