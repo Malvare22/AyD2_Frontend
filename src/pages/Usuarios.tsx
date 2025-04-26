@@ -153,7 +153,7 @@ const Usuarios = () => {
 
   const handleSave = async (updatedUser: Usuario) => {
     try {
-      const response = await modificarCuenta({ ...updatedUser });
+      await modificarCuenta({ ...updatedUser });
 
       // Actualiza el estado local después de la respuesta exitosa del backend
       setUsuarios((prev) =>

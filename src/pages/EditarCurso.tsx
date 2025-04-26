@@ -24,7 +24,6 @@ const EditarCursoAdmin = () => {
     fecha_inicio: new Date().toISOString().split('T')[0],
     horario: '',
     salon: '',
-    ruta: undefined,
     nombre: '',
     presupuesto: 0
   });

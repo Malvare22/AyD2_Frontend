@@ -68,7 +68,7 @@ const CursosAdmin = () => {
                 <td className="py-3 px-4">{curso.nombre}</td>
                 <td className="py-3 px-4">{curso.salon}</td>
                 <td className="py-3 px-4">{curso.horario}</td>
-                <td className="py-3 px-4">$ {curso.presupuesto.toLocaleString()}</td>
+                <td className="py-3 px-4">$ {curso.presupuesto?.toLocaleString()}</td>
                 <td className="py-3 px-4">{curso.descripcion}</td>
                 <td className="py-3 px-4">{curso.cantidad_maxima_estudiantes}</td>
                 <td className="py-3 px-4">

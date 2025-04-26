@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-import { Curso, matricular, obtenerDetalle, verAsignados } from "../services/cursoService";
+import { Curso, obtenerDetalle } from "../services/cursoService";
 import { useParams } from "react-router-dom";
-import Swal from "sweetalert2";
 
 
 const MatricularCurso = () => {
     const [curso, setCurso] = useState<Curso>();
     const { id } = useParams();
-    const [condition, setCondition] = useState<null | boolean>(null);
     useEffect(() => {
         (async () => {
             const response = await obtenerDetalle({ id: parseInt(id!) });
@@ -18,26 +16,7 @@ const MatricularCurso = () => {
         })();
     }, [])
 
-    const matricularCurso = async () => {
-        const response = await Swal.fire({
-            text: 'Quieres matricularte en este curso?',
-            icon: 'question',
-            confirmButtonText: 'Matricularse',
-            cancelButtonText: 'Cancelar',
-            showCancelButton: true,
-        })
-        if(response.isConfirmed){
-            const idE = parseInt(localStorage.getItem('USER_ID')!);
-            const response = await matricular({
-                id_estudiante: idE,
-                id: parseInt(id!)
-            })
-            Swal.fire({
-                title: response.mensaje
-            })
-            
-        }
-    }
+    
 
     return (<>
 

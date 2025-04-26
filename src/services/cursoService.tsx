@@ -26,7 +26,8 @@ export interface Curso {
   estado_matricula?: "aprobado" | "rechazado" | "pendiente";
   correo?: string,
   orden?: string;
-  id_estudiante?: number
+  id_estudiante?: number;
+  imagen?: File;
 }
 
 export interface CursoRequest extends Partial<Curso> {}
@@ -80,7 +81,7 @@ export async function desAsignarEstudiante(params: Omit<CursoRequest, "orden">) 
   return sendCursoRequest({ ...params, orden: "desasignar_estudiante" });
 }
 
-export async function desAsignarDocente(params: Omit<CursoRequest, "orden">) {
+export async function desAsignarDocente(params: Omit<CursoRequest & {id_docente: number}, "orden">) {
   return sendCursoRequest({ ...params, orden: "desasignar_docente" });
 }
 
@@ -88,7 +89,7 @@ export async function matricular(params: Omit<CursoRequest, "orden">) {
   return sendCursoRequest({ ...params, orden: "matricular" });
 }
 
-export async function asignarDocente(params: Omit<CursoRequest, "orden">) {
+export async function asignarDocente(params: Omit<CursoRequest & {id_docente: number}, "orden">) {
   return sendCursoRequest({ ...params, orden: "asignar_docente" });
 }
 
