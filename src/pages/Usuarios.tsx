@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
-import { listarCuentas, modificarCuenta, Usuario } from "../services/usuarioService";
+import {
+  eliminarCuenta,
+  listarCuentas,
+  modificarCuenta,
+  Usuario,
+} from "../services/usuarioService";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 
 interface EditableRowProps {
   usuario: Usuario;
@@ -10,6 +16,21 @@ interface EditableRowProps {
   onSave: (updatedUser: Usuario) => void;
   onCancel: () => void;
 }
+
+const RemoveIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="currentColor"
+      className="bi bi-trash-fill"
+      viewBox="0 0 16 16"
+    >
+      <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
+    </svg>
+  );
+};
 
 // Componente para una fila editable
 const EditableRow: React.FC<EditableRowProps> = ({
@@ -20,6 +41,39 @@ const EditableRow: React.FC<EditableRowProps> = ({
   onCancel,
 }) => {
   const [editedUser, setEditedUser] = useState<Usuario>(usuario);
+
+  const navigate = useNavigate();
+
+  const { mutate: mutateRemove } = useMutation({
+    mutationFn: async (user: Usuario) => {
+      console.log("Llamando eliminarCuenta con:", user);
+      await eliminarCuenta({...user})},
+    mutationKey: ["Eliminar Usuario"],
+    onSuccess: () =>
+      Swal.fire({
+        title: "Se ha eliminado exitosamente",
+      }).then(() => {
+        navigate(0);
+      }),
+
+    onError: () =>  Swal.fire({
+      title: "Error al eliminar",
+      icon: 'error'
+    }),
+  });
+
+  async function handleRemoveUser(user: Usuario) {
+    const response = await Swal.fire({
+      text: "¿Estás Seguro de eliminar a este usuario?",
+      icon: "question",
+      confirmButtonText: "Eliminar",
+      cancelButtonText: "Cancelar",
+      showCancelButton: true,
+    });
+    if (response.isConfirmed) {
+      await mutateRemove(user);
+    }
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -50,12 +104,20 @@ const EditableRow: React.FC<EditableRowProps> = ({
           </span>
         </td>
         <td className="border-b py-2 px-4">
-          <button
-            onClick={onEdit}
-            className="bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1 rounded text-sm transition-colors duration-200"
-          >
-            Editar
-          </button>
+          <div className="flex space-x-2">
+            <button
+              onClick={onEdit}
+              className="bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1 rounded text-sm transition-colors duration-200"
+            >
+              Editar
+            </button>
+            <button
+              onClick={() => handleRemoveUser(usuario)}
+              className="bg-gray-100 hover:bg-gray-200 fill-red-600 text-gray-600 px-3 py-1 rounded text-sm transition-colors duration-200"
+            >
+              <RemoveIcon />
+            </button>
+          </div>
         </td>
       </tr>
     );
@@ -133,10 +195,10 @@ const Usuarios = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const { data,error } = useQuery({
+  const { data, error } = useQuery({
     queryFn: () => listarCuentas(),
     queryKey: ["List Users"],
-    retry: 2
+    retry: 2,
   });
 
   useEffect(() => {
